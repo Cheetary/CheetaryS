@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top 50 List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 80%;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #35424a;
+      color: white;
+      padding: 10px;
+    }
+    h1 {
+      text-align: center;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      background: #e4e4e4;
+      margin: 5px 0;
+      border-left: 5px solid #35424a;
+    }
+    .profile {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .profile img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Top 50 List</h1>
+  </header>
+  <div class="container">
+    <ul id="top50List">
+      <!-- Items will be dynamically added here -->
+    </ul>
+  </div>
+  <script>
+    // Fetch YouTube usernames and profile pictures from the server
+    fetch('/api/top50')
+      .then(response => response.json())
+      .then(users => {
+        const listElement = document.getElementById("top50List");
+        listElement.innerHTML = "";
+        users.forEach((user, index) => {
+          const listItem = document.createElement("li");
+          listItem.innerHTML = `
+            <div class="profile">
+              <img src="${user.profilePic}" alt="Profile Picture">
+              <span>${index + 1}. ${user.username} (${user.subs} subs)</span>
+            </div>
+          `;
+          listElement.appendChild(listItem);
+        });
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  </script>
+</body>
+</html>
